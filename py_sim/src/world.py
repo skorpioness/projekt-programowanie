@@ -4,13 +4,13 @@ class World:
         self._organismList = []
         self._next_id = 0
 
-    def getOrganismList(self):
-        return self._organismList
-
     def addOrganism(self, organism):
         organism.setID(self._next_id)
         self._organismList.append(organism)
         self._next_id += 1
+
+    def getOrganismList(self):
+        return self._organismList
 
     def checkCoord(self, x, y):
         for o in self._organismList:

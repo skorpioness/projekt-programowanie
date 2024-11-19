@@ -1,6 +1,8 @@
 from typing import Self
 import random
 
+import pygame
+
 
 class Organism:
     def __init__(self, pos_x: int, pos_y: int, strength: int, initiative: int, world: 'world.World', id: int):
@@ -12,6 +14,7 @@ class Organism:
         self.strength = strength
         self.initiative = initiative
         self.type = None
+
 
     def getID(self):
         return self.id
@@ -55,6 +58,11 @@ class Organism:
     def takeTurn(self):
         pass
 
+    def draw(self, screen):
+        if hasattr(self, 'image') and self.image:  # Sprawdza, czy obiekt ma obraz
+            screen.blit(self.image, (self.pos_x, self.pos_y))
+        else:  # Rysuje placeholder, jeśli obraz nie jest przypisany
+            pygame.draw.rect(screen, (255, 0, 0), (self.pos_x, self.pos_y, 20, 20))
 
 class Animal(Organism):
     def __init__(self, pos_x, pos_y, strength, initiative, world: 'world.World', id):
@@ -135,19 +143,26 @@ class Wolf(Animal):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 9, 5, world, id)
         self.name = 'Wolf'
+        self.image = pygame.image.load('assets/wolf.png')
+        self.image = pygame.transform.scale(self.image, (40, 40))
+
+
+
 
 
 class Sheep(Animal):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 4, 4, world, id)
         self.name = 'Sheep'
-
+        self.image = pygame.image.load('assets/sheep.png')
+        self.image = pygame.transform.scale(self.image, (40, 40))
 
 class Turtle(Animal):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 2, 1, world, id)
         self.name = 'Turtle'
-
+        self.image = pygame.image.load('assets/turtle.png')
+        self.image = pygame.transform.scale(self.image, (20, 20))
     def action(self):
         if random.randint(0, 3) != 0:
             print(f"{self.getName()} with ID {self.getID()} didn't move this turn")
@@ -167,7 +182,8 @@ class Lion(Animal):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 11, 7, world, id)
         self.name = 'Lion'
-
+        self.image = pygame.image.load('assets/lion.png')
+        self.image = pygame.transform.scale(self.image, (20, 20))
     def collision(self, opponent: Animal):
         if opponent.strength < 5:
             print(
@@ -181,7 +197,8 @@ class Scorpion(Animal):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 2, 4, world, id)
         self.name = 'Scorpion'
-
+        self.image = pygame.image.load('assets/scorpion.png')
+        self.image = pygame.transform.scale(self.image, (20, 20))
     def collision(self, opponent: Animal):
         print(
             f"{self.getName()} with ID {self.getID()} poisoned and killed {opponent.getName()} with ID {opponent.getID()}")
@@ -192,12 +209,14 @@ class Grass(Plant):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 0, world, id)
         self.name = 'Grass'
-
+        self.image = pygame.image.load('assets/grass.png')
+        self.image = pygame.transform.scale(self.image, (20, 20))
 
 class Guarana(Plant):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 0, world, id)
-        self.name = 'Guarana'
+        self.image = pygame.image.load('assets/guarana.png')
+        self.image = pygame.transform.scale(self.image, (20, 20))
 
     def collision(self, target: Animal):
         print(
@@ -208,4 +227,5 @@ class Guarana(Plant):
 class Milkweed(Plant):
     def __init__(self, pos_x, pos_y, world: 'world.World', id: int):
         super().__init__(pos_x, pos_y, 0, world, id)
-        self.name = 'Milkweed'
+        self.image = pygame.image.load('assets/milkweed.png')
+        self.image = pygame.transform.scale(self.image, (20, 20))
